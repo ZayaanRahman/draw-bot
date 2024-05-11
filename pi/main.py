@@ -1,11 +1,11 @@
 
-import robot
+from robot import Robot
 
 
 def main():
-    r = robot.Robot()
-    r.load_points([(0, 1), (1, 1), (-1, 2)])
-    r.run(8)
+    robot = Robot()
+    robot.load_points([(0, 1), (1, 1), (-1, 2)])
+    robot.run(8)
 
 
 if __name__ == "__main__":

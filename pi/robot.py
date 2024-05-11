@@ -1,13 +1,21 @@
 import time
 import queue
+from listener import Listener
 
-
+# main class dictating robot operations
 class Robot:
 
-    # constructor, duration in sec
+    # constructor
     def __init__(self):
+        self.position = (0,0)
         self.queue = queue.Queue()
         self.history = []
+        
+        self.end_flag = False
+        
+        self.listener = Listener(self.queue, self.end_flag, 3000)
+        
+        
         self.birth_time = time.time()  # for logging
         print(f"robot constructed at {self.birth_time} \n")
 
@@ -16,16 +24,16 @@ class Robot:
         for p in points:
             self.queue.put(p)
 
-    # run the robot
+    # run the robot, duration in sec
     def run(self, duration=60):
 
         start_time = time.time()
         print(f"began running at {start_time} \n")
         end_time = start_time + duration
 
-        self.listen(3000)
+        self.listener.listen()
 
-        while time.time() <= end_time:
+        while time.time() <= end_time or self.end_flag:
 
             if not self.queue.empty():
                 target = self.queue.get()
@@ -37,12 +45,8 @@ class Robot:
 
         print(f"ended running at {time.time()} \n")
 
-    # listen to server for new points asynchronously, and add them to the points list
-    def listen(self, port):
-        print(f"listening on port {port} \n")
-        # Will have an endpoint to accept points, and another to end execution
-
     # move to target point
     def move(self, target):
         print(f"moving to {target} \n")
+        vector = target - self.position
         time.sleep(2)  # just for testing
