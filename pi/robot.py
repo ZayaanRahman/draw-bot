@@ -44,7 +44,7 @@ class Robot:
         for p in points:
             self.state.queue.put(p)
 
-    # run the robot, duration in sec
+    # run the robot, duration in sec. ends after duration or when end flag is set
     def run(self, duration=60):
 
         self.state.start_time = time.time()

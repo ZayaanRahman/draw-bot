@@ -1,11 +1,12 @@
 import threading
-from flask import Flask, request, jsonify
+from flask import Flask, request
 
 # class to abstract the logic of listening to the server for new points
 
 
 class Listener:
 
+    # constructor
     def __init__(self, state, port):
         self.app = Flask(__name__)
 
@@ -14,6 +15,7 @@ class Listener:
 
         self.setup()
 
+    # defines flask endpoints for robot
     def setup(self):
 
         @self.app.route('/points', methods=['POST'])
@@ -27,5 +29,10 @@ class Listener:
         def end_run(self):
             self.state.end_flag = True
 
+    # starts thread to listen for points or end flag
     def listen(self):
-        print("Listening\n")
+        listen_thread = threading.Thread(target=self.app.run, kwargs={
+                                         'port': self.port}, daemon=True)
+        listen_thread.start()
+
+        print(f"Listening on port {self.port}\n")
