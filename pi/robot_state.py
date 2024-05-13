@@ -12,6 +12,8 @@ class RobotState:
 
         self.start_time = None  # set ONLY when run() is called
         self.end_time = None  # set ONLY when run() ends
+        
+        self.start_flag = False # implement start flag functionality in run function
         self.end_flag = False
 
         # mutex for queue
@@ -25,6 +27,9 @@ class RobotState:
 
         # mutex for end_flag
         self.ef_lock = threading.Lock()
+        
+        # mutex for start_flag
+        self.sf_lock = threading.Lock()
 
     # convert state to string
     def __str__(self):

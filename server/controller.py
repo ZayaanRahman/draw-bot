@@ -10,14 +10,15 @@ class Controller:
         self.commands = {
             "status": self.status,
             "add": self.add,
+            "start": self.start,
             "end": self.end,
             "exit": self.exit
         }
 
         self.is_started = False
         self.end_flag = False
-        
-        # history of bot commands sent to the 
+
+        # history of bot commands sent to the
         self.history = []
 
     # start the cli
@@ -38,13 +39,17 @@ class Controller:
     def add(self, args):
         print(args)
 
+    # start robot operation
+    def start(self, args):
+        print(args)
+
     # end robot operation
     def end(self, args):
         print(args)
 
     # exit controller, ending robot operation and controller
     def exit(self, args):
-        self.end(args)
+        print("exiting...")
         self.end_flag = True
 
     # --HELPER FUNCTIONS-------------------------------------------------------------------------------

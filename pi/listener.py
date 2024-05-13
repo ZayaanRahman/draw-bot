@@ -15,15 +15,24 @@ class Listener:
     # defines flask endpoints for robot
     def setup(self):
 
-        @self.app.route('/points', methods=['POST'])
-        def get_points(self):
+        @self.app.route('/get_status', methods=['GET'])
+        def get_status(self):
+            return {"status": str(self.state)}
+
+        @self.app.route('/add_points', methods=['POST'])
+        def add_points(self):
             points = request.json["points"]
 
             with self.state.q_lock:
                 for point in points:
                     self.state.queue.append(point)
+                    
+        @self.app.route('/start_run', methods=['POST'])
+        def start_run(self):
+            # set start_flag to True
+            print("not implemented")
 
-        @self.app.route('/end', methods=['POST'])
+        @self.app.route('/end_run', methods=['POST'])
         def end_run(self):
             with self.state.ef_lock:
                 self.state.end_flag = True
