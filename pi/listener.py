@@ -27,6 +27,7 @@ class Listener:
 
             with self.state.q_lock:
                 for point in points:
+                    # once point class made, construct point from lists
                     self.state.queue.append(point)
                 new_q = self.state.queue
             return jsonify({"queue": list(new_q)})
@@ -35,13 +36,13 @@ class Listener:
         def start_run():
             with self.state.sf_lock:
                 self.state.start_flag = True
-            return jsonify({"message": "Run started"})
+            return jsonify({"message": "run started"})
 
         @self.app.route('/end_run', methods=['POST'])
         def end_run():
             with self.state.ef_lock:
                 self.state.end_flag = True
-            return jsonify({"message": "Run ended"})
+            return jsonify({"message": "run ended"})
 
     # starts thread to listen for points or end flag at port
     def listen(self, port):
