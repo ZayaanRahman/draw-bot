@@ -54,7 +54,7 @@ class Robot:
                     target = self.state.queue.popleft()
 
             else:
-                print("nowhere to go\n")
+                # print("nowhere to go\n")
                 time.sleep(2)  # wait 1 sec if no points found
 
         with self.state.ef_lock:
@@ -67,7 +67,7 @@ class Robot:
 
     # move to target point
     def move(self, target):
-        print(f"moving to {target} \n")
+        # print(f"moving to {target} \n")
         time.sleep(2)  # just for testing
 
     # check if robot should continue
