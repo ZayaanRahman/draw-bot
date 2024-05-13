@@ -34,13 +34,13 @@ class Robot:
         self.listener.listen(port)
 
     # enable the robot, allowing it to start when a run command is sent
-    # if duration is None, run infinitely until end flag is set
+    # if duration is None, do infinitely until end flag is set
     # else, end after duration secs
     def enable(self, duration=None):
 
         # wait until start flag is set before starting
         while not self.should_start():
-            print("not started yet")
+            print(".\n")
             time.sleep(1)  # wait a second before checking for start again
 
         # set start time once past start block
