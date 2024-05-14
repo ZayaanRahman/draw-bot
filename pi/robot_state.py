@@ -36,7 +36,8 @@ class RobotState:
     # convert state to string
     def __str__(self):
 
-        output = f"==[ ROBOT STATE AT {time.time()} ]======\n"
+        output = f"robot state at {time.strftime("%H:%M:%S")}:\n"
+        output += "=================================\n"
 
         with self.st_lock:
             s_time = self.start_time
@@ -54,8 +55,7 @@ class RobotState:
         with self.q_lock:
             output += f"to visit: {list(self.queue)}\n"
 
-        output += "============================================="
-
+        output += "================================="
         return output
 
     # print state data every period seconds, for use in a robot thread

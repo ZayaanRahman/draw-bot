@@ -41,11 +41,11 @@ class Robot:
         # wait until start flag is set before starting
         while not self.should_start():
             print(".\n")
-            time.sleep(1)  # wait a second before checking for start again
+            time.sleep(3)  # wait a second before checking for start again
 
         # set start time once past start block
         with self.state.st_lock:
-            self.state.start_time = time.time()
+            self.state.start_time = time.strftime("%H:%M:%S")
 
         while not self.should_end(duration):
 
@@ -64,12 +64,12 @@ class Robot:
 
             else:
                 print("nowhere to go\n")
-                time.sleep(2)  # wait 1 sec if no points found
+                time.sleep(3)  # wait 1 sec if no points found
 
         with self.state.ef_lock:
             self.state.end_flag = True  # for post-run logging and consistency
         with self.state.et_lock:
-            self.state.end_time = time.time()
+            self.state.end_time = time.strftime("%H:%M:%S")
 
     # --"LOW LEVEL" AND HELPER FUNCTIONS---------------------------------------------------------------
     # -------------------------------------------------------------------------------------------------
@@ -77,7 +77,8 @@ class Robot:
     # move to target point
     def move(self, target):
         print(f"moving to {target} \n")
-        time.sleep(2)  # just for testing
+        time.sleep(3)  # just for testing
+        self.state.position = target  # not thread safe, edit
 
     # check if robot should start safely
     def should_start(self):
@@ -95,4 +96,4 @@ class Robot:
             e_flag = self.state.end_flag
 
         # do demorgans
-        return not (not e_flag and (duration == None or time.time() < s_time + duration))
+        return not (not e_flag and (duration == None or time.strftime("%H:%M:%S") < s_time + duration))
