@@ -33,67 +33,118 @@ class Robot:
     def listen(self, port):
         self.listener.listen(port)
 
-    # enable the robot, allowing it to start when a run command is sent
-    # if duration is None, do infinitely until end flag is set
-    # else, end after duration secs
+    # Enables running for duration, or infinitely if duration is none
+    # Runs when run_flag is true
+    # IMPORTANT: as of now, robot will finish moving to a point even of run flag is set to false or duration ends
     def enable(self, duration=None):
 
-        # wait until start flag is set before starting
-        while not self.should_start():
+        if duration is not None:
+            enable_limit = time.time() + duration
+
+        while duration is None or time.time() <= enable_limit:
+
+            # loop while running
+            while self.get_run_flag():
+
+                point_count = len(self.get_queue())
+
+                # NOT THREAD SAFE
+                if point_count != 0:
+                    target = self.get_queue()[0]
+                    self.move(target)
+                    self.append_to_history(target)
+
+                    # popping done at end to ensure target stays in queue until finished, and moved to history
+                    self.pop_from_queue()
+
+                else:
+                    print("nowhere to go\n")
+                    time.sleep(3)  # wait 1 sec if no points found
+
+            time.sleep(3)  # check for new flag every second
             print(".\n")
-            time.sleep(3)  # wait a second before checking for start again
 
-        # set start time once past start block
+    # --GETTERS AND SETTERS----------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------------
+
+    def get_position(self):
+        with self.state.pos_lock:
+            return self.state.position
+
+    def set_position(self, new_pos):
+        with self.state.pos_lock:
+            self.state.position = new_pos
+
+    # These are not thread safe. Anything from get must not be modified,
+    # and anything used to set must not be changed
+
+    # getter and setter for history
+    def get_history(self):
+        with self.state.his_lock:
+            return self.state.history
+
+    def set_history(self, new_hist):
+        with self.state.his_lock:
+            self.state.history = new_hist
+
+    # getter and setter for queue
+    def get_queue(self):
+        with self.state.q_lock:
+            return self.state.queue
+
+    def set_queue(self, new_q):
+        with self.state.q_lock:
+            self.state.queue = new_q
+
+    # getter and setter for start time
+    def get_start_time(self):
         with self.state.st_lock:
-            self.state.start_time = time.strftime("%H:%M:%S")
+            return self.state.start_time
 
-        while not self.should_end(duration):
+    def set_start_time(self, new_time):
+        with self.state.st_lock:
+            self.state.start_time = new_time
 
-            with self.state.q_lock:
-                point_count = len(self.state.queue)
-
-            if not point_count == 0:
-                with self.state.q_lock:
-                    target = self.state.queue[0]
-                self.move(target)
-                self.state.history.append(target)
-
-                # popping done at end to ensure target stays in queue until finished, and moved to history
-                with self.state.q_lock:
-                    target = self.state.queue.popleft()
-
-            else:
-                print("nowhere to go\n")
-                time.sleep(3)  # wait 1 sec if no points found
-
-        with self.state.ef_lock:
-            self.state.end_flag = True  # for post-run logging and consistency
+    # getter and setter for end time
+    def get_end_time(self):
         with self.state.et_lock:
-            self.state.end_time = time.strftime("%H:%M:%S")
+            return self.state.end_time
 
-    # --"LOW LEVEL" AND HELPER FUNCTIONS---------------------------------------------------------------
+    def set_end_time(self, new_time):
+        with self.state.et_lock:
+            self.state.end_time = new_time
+
+    # getter and setter for run flag
+    def get_run_flag(self):
+        with self.state.rf_lock:
+            return self.state.run_flag
+
+    def set_run_flag(self, new_flag):
+        with self.state.rf_lock:
+            self.state.run_flag = new_flag
+
+    # methods to append to history and append/pop/front from queue
+    def append_to_history(self, item):
+        with self.state.his_lock:
+            self.state.history.append(item)
+
+    def append_to_queue(self, item):
+        with self.state.q_lock:
+            self.state.queue.append(item)
+
+    def pop_from_queue(self):
+        with self.state.q_lock:
+            return self.state.queue.popleft()
+        
+    def front_of_queue(self):
+        with self.state.q_lock:
+            return self.state.queue[0]
+
+    # --LOW LEVEL INTERFACE----------------------------------------------------------------------------
     # -------------------------------------------------------------------------------------------------
 
     # move to target point
     def move(self, target):
         print(f"moving to {target} \n")
         time.sleep(3)  # just for testing
-        self.state.position = target  # not thread safe, edit
-
-    # check if robot should start safely
-    def should_start(self):
-        with self.state.sf_lock:
-            sf = self.state.start_flag
-
-        return sf
-
-    # check if robot should end safely
-    def should_end(self, duration):
-
-        with self.state.st_lock:
-            s_time = self.state.start_time
-        with self.state.ef_lock:
-            e_flag = self.state.end_flag
-
-        # do demorgans
-        return not (not e_flag and (duration == None or time.strftime("%H:%M:%S") < s_time + duration))
+        self.set_position(target)  # not thread safe, edit

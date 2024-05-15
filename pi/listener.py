@@ -1,17 +1,17 @@
+import time
 import threading
 from flask import Flask, request, jsonify
 
 from robot_state import RobotState
 
 # class to abstract the logic of listening to the server for new points
-
-
 class Listener:
     # constructor
     def __init__(self, state, port):
         self.app = Flask(__name__)
         self.state = state
         self.port = None  # for reporting
+        self.activate_time = None
         self.setup()
 
     # defines flask endpoints for robot
@@ -25,24 +25,22 @@ class Listener:
         def add_points():
             points = request.json["points"]
 
-            with self.state.q_lock:
-                for point in points:
-                    # once point class made, construct point from lists
-                    self.state.queue.append(point)
-                new_q = self.state.queue
-            return jsonify({"queue": list(new_q)})
+            for point in points:
+                # once point class made, construct point from lists
+                self.state.append_to_queue(point)
+            return jsonify({"queue": list(self.state.get_queue())})
 
         @self.app.route('/start_run', methods=['POST'])
         def start_run():
-            with self.state.sf_lock:
-                self.state.start_flag = True
-            return jsonify({"message": "run started"})
+            self.state.set_run_flag(True)
+            self.state.set_start_time(time.strftime('%H:%M:%S'))
+            return jsonify({"message": f"run started at {self.state.get_start_time()}"})
 
         @self.app.route('/end_run', methods=['POST'])
         def end_run():
-            with self.state.ef_lock:
-                self.state.end_flag = True
-            return jsonify({"message": "run ended"})
+            self.state.set_run_flag(False)
+            self.state.set_end_time(time.strftime('%H:%M:%S'))
+            return jsonify({"message": f"run ended at {self.state.get_end_time()}"})
 
     # starts thread to listen for points or end flag at port
     def listen(self, port):
@@ -50,3 +48,4 @@ class Listener:
         listen_thread = threading.Thread(target=self.app.run, kwargs={
                                          'port': port}, daemon=True)
         listen_thread.start()
+        self.activate_time = time.strftime('%H:%M:%S')
