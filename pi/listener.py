@@ -19,7 +19,7 @@ class Listener:
 
         @self.app.route('/get_status', methods=['GET'])
         def get_status():
-            return jsonify({"status": str(self.state)})
+            return jsonify(self.state.to_dict())
 
         @self.app.route('/add_points', methods=['PUT'])
         def add_points():

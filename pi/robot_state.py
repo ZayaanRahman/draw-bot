@@ -1,6 +1,7 @@
 from collections import deque
 import threading
 import time
+import json
 
 # class storing robot state (to be passed to listeners)
 class RobotState:
@@ -142,8 +143,7 @@ class RobotState:
         elif self.get_run_flag() == True:
             output += f"status: running - started at {self.get_start_time()}\n"
         else:
-            output += f"status: not running - stopped at {
-                self.get_end_time()}\n"
+            output += f"status: not running - stopped at {self.get_end_time()}\n"
 
         output += f"position: {self.get_position()}\n"
         output += f"visited: {self.get_history()}\n"
@@ -151,6 +151,17 @@ class RobotState:
 
         output += "================================="
         return output
+    
+    # convert state to dict for jsonification
+    def to_dict(self):
+        state = {
+            "time": f"{time.strftime('%H:%M:%S')}",
+            "status": "not started yet" if self.get_start_time() is None else "running - started at {}".format(self.get_start_time()) if self.get_run_flag() else "not running - stopped at {}".format(self.get_end_time()),
+            "position": self.get_position(),
+            "visited": self.get_history(),
+            "to visit": list(self.get_queue())
+        }
+        return state
 
     # print state data every period seconds, for use in a robot thread
     def print_cts(self, period):
