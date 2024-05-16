@@ -27,7 +27,7 @@ class Listener:
 
             for point in points:
                 # once point class made, construct point from lists
-                self.state.append_to_queue(point)
+                self.state.append_to_queue(tuple(point))
             return jsonify({"queue": list(self.state.get_queue())})
 
         @self.app.route('/start_run', methods=['POST'])

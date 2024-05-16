@@ -1,9 +1,13 @@
-from controller import Controller
+from cli import Cli
+# from server import Server
 
 
 def main():
 
-    Controller(pi_ip="127.0.0.1", pi_port="5000").run()
+    cli = Cli(pi_ip="127.0.0.1", pi_port="5000")
+    cli.run()
+    # controller.start_server()
+
 
 if __name__ == "__main__":
     main()

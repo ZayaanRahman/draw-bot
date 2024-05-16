@@ -3,8 +3,6 @@ import threading
 import time
 
 # class storing robot state (to be passed to listeners)
-
-
 class RobotState:
     # constructor
     def __init__(self):
@@ -115,7 +113,7 @@ class RobotState:
     def set_end_flag(self, new_flag):
         with self.ef_lock:
             self.end_flag = new_flag
-            
+
     # methods to append to history and append/pop/front from queue
     def append_to_history(self, item):
         with self.his_lock:
@@ -128,7 +126,7 @@ class RobotState:
     def pop_from_queue(self):
         with self.q_lock:
             return self.queue.popleft()
-        
+
     def front_of_queue(self):
         with self.q_lock:
             return self.queue[0]
@@ -144,7 +142,8 @@ class RobotState:
         elif self.get_run_flag() == True:
             output += f"status: running - started at {self.get_start_time()}\n"
         else:
-            output += f"status: not running - stopped at {self.get_end_time()}\n"
+            output += f"status: not running - stopped at {
+                self.get_end_time()}\n"
 
         output += f"position: {self.get_position()}\n"
         output += f"visited: {self.get_history()}\n"

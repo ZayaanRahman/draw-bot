@@ -3,6 +3,8 @@ import requests
 import json
 
 # class for CLI
+
+
 class Controller:
 
     # constructor
@@ -20,18 +22,8 @@ class Controller:
             "exit": self.exit
         }
 
+        self.end_signal = False
         self.is_started = False
-        self.end_flag = False
-
-        # history of bot commands, not implemented
-        self.history = []
-
-    # start the cli
-    def run(self):
-        print("\nWelcome 🤖!")
-        print("Type \"help\" for a list of commands.\n")
-        while not self.end_flag:
-            print("[🤖!] >> " + self.process_input(input("[🤖?] << ")) + "\n")
 
     # --CLI COMMANDS-----------------------------------------------------------------------------------
     # -------------------------------------------------------------------------------------------------
@@ -79,7 +71,11 @@ class Controller:
 
         response = requests.put(
             self.pi_address + "add_points", data=json_data, headers=headers)
-        return "updated queue: " + str(response.json()["queue"])
+        tuple_q = []
+        for item in response.json()["queue"]:
+            tuple_q.append(tuple(item))
+
+        return "updated queue: " + str(tuple_q)
 
     # start robot operation
 
@@ -94,22 +90,11 @@ class Controller:
 
     # exit controller, ending robot operation and controller
     def exit(self, args):
-        self.end_flag = True
+        self.end_signal = True
         return "exiting..👋"
 
     # --HELPER FUNCTIONS-------------------------------------------------------------------------------
     # -------------------------------------------------------------------------------------------------
-
-    # interpret user input
-    def process_input(self, input):
-
-        arg_list = input.split(" ")
-        command = arg_list[0].strip()
-
-        if not command in self.commands:
-            return "invalid command"
-        else:
-            return self.commands[command](arg_list[1:])
 
     def float_conv(self, str):
         try:
