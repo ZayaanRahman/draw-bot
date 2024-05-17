@@ -1,5 +1,6 @@
 import time
 import threading
+import copy
 
 from robot_state import RobotState
 from listener import Listener
@@ -18,9 +19,15 @@ class Robot:
         self.listener = Listener(self.state, 3000)
 
     # start a thread to print the robot's state every period seconds
-    def start_logger(self, period):
+    def start_print_logger(self, period):
         report_thread = threading.Thread(
-            target=self.state.print_cts, args=[period], daemon=True)
+            target=self.state.log_print, args=[period], daemon=True)
+        report_thread.start()
+    
+    # start a thread to print the robot's state every period seconds
+    def start_file_logger(self, period):
+        report_thread = threading.Thread(
+            target=self.state.log_txt, args=[period], daemon=True)
         report_thread.start()
 
     # method to manually load points (2-tuples) into queue
@@ -67,78 +74,60 @@ class Robot:
     # --GETTERS AND SETTERS----------------------------------------------------------------------------
     # -------------------------------------------------------------------------------------------------
 
+    # move to target point
     def get_position(self):
-        with self.state.pos_lock:
-            return self.state.position
+        return self.state.get_position()
 
     def set_position(self, new_pos):
-        with self.state.pos_lock:
-            self.state.position = new_pos
-
-    # These are not thread safe. Anything from get must not be modified,
-    # and anything used to set must not be changed
+        self.state.set_position(new_pos)
 
     # getter and setter for history
     def get_history(self):
-        with self.state.his_lock:
-            return self.state.history
+        return self.state.get_history()
 
     def set_history(self, new_hist):
-        with self.state.his_lock:
-            self.state.history = new_hist
+        self.state.set_history(new_hist)
 
     # getter and setter for queue
     def get_queue(self):
-        with self.state.q_lock:
-            return self.state.queue
+        return self.state.get_queue()
 
     def set_queue(self, new_q):
-        with self.state.q_lock:
-            self.state.queue = new_q
+        self.state.set_queue(new_q)
 
     # getter and setter for start time
     def get_start_time(self):
-        with self.state.st_lock:
-            return self.state.start_time
+        return self.state.get_start_time()
 
     def set_start_time(self, new_time):
-        with self.state.st_lock:
-            self.state.start_time = new_time
+        self.state.set_start_time(new_time)
 
     # getter and setter for end time
     def get_end_time(self):
-        with self.state.et_lock:
-            return self.state.end_time
+        return self.state.get_end_time()
 
     def set_end_time(self, new_time):
-        with self.state.et_lock:
-            self.state.end_time = new_time
+        self.state.set_end_time(new_time)
 
     # getter and setter for run flag
     def get_run_flag(self):
-        with self.state.rf_lock:
-            return self.state.run_flag
+        return self.state.get_run_flag()
 
     def set_run_flag(self, new_flag):
-        with self.state.rf_lock:
-            self.state.run_flag = new_flag
+        self.state.set_run_flag(new_flag)
 
     # methods to append to history and append/pop/front from queue
     def append_to_history(self, item):
-        with self.state.his_lock:
-            self.state.history.append(item)
+        self.state.append_to_history(item)
 
     def append_to_queue(self, item):
-        with self.state.q_lock:
-            self.state.queue.append(item)
+        self.state.append_to_queue(item)
 
     def pop_from_queue(self):
-        with self.state.q_lock:
-            return self.state.queue.popleft()
+        return self.state.pop_from_queue()
         
     def front_of_queue(self):
-        with self.state.q_lock:
-            return self.state.queue[0]
+        return self.state.front_of_queue()
 
     # --LOW LEVEL INTERFACE----------------------------------------------------------------------------
     # -------------------------------------------------------------------------------------------------

@@ -2,6 +2,7 @@ from collections import deque
 import threading
 import time
 import json
+import copy
 
 # class storing robot state (to be passed to listeners)
 class RobotState:
@@ -46,29 +47,29 @@ class RobotState:
 
     def get_position(self):
         with self.pos_lock:
-            return self.position
+            return copy.deepcopy(self.position)
 
     def set_position(self, new_pos):
         with self.pos_lock:
-            self.position = new_pos
+            self.position = copy.deepcopy(new_pos)
 
     # getter and setter for history
     def get_history(self):
         with self.his_lock:
-            return self.history
+            return copy.deepcopy(self.history)
 
     def set_history(self, new_hist):
         with self.his_lock:
-            self.history = new_hist
+            self.history = copy.deepcopy(new_hist)
 
     # getter and setter for queue
     def get_queue(self):
         with self.q_lock:
-            return self.queue
+            return copy.deepcopy(self.queue)
 
     def set_queue(self, new_q):
         with self.q_lock:
-            self.queue = new_q
+            self.queue = copy.deepcopy(new_q)
 
     # getter and setter for start time
     def get_start_time(self):
@@ -164,7 +165,14 @@ class RobotState:
         return state
 
     # print state data every period seconds, for use in a robot thread
-    def print_cts(self, period):
+    def log_print(self, period):
         while True:  # continue even after run ends
             print(self)
+            time.sleep(period)
+            
+    def log_txt(self, period):
+        filename = f"state-log-{time.strftime('%Y-%m-%d-%H-%M')}.txt"
+        while True:  # continue even after run ends
+            with open(filename, "a") as file:
+                file.write(str(self) + "\n\n")
             time.sleep(period)
