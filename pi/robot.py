@@ -55,7 +55,6 @@ class Robot:
 
                 point_count = len(self.get_queue())
 
-                # NOT THREAD SAFE
                 if point_count != 0:
                     target = self.get_queue()[0]
                     self.move(target)

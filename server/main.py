@@ -5,10 +5,10 @@ from server import Server
 
 def main():
 
-    cli = Cli(pi_ip="127.0.0.1", pi_port="5000")
+    cli = Cli(pi_ip="", pi_port="5000")
     cli.run()
     
-    # server = Server(pi_ip="127.0.0.1", pi_port="5000")
+    # server = Server(pi_ip="", pi_port="5000")
     # server.run(port=3000)
 
 
