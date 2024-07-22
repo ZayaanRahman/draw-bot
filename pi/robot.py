@@ -134,5 +134,8 @@ class Robot:
     # move to target point
     def move(self, target):
         print(f"moving to {target} \n")
+        
         time.sleep(3)  # just for testing
+        
+        
         self.set_position(target)  # not thread safe, edit

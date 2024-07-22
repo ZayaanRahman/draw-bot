@@ -1,14 +1,18 @@
 import time
 import threading
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 from robot_state import RobotState
 
 # class to abstract the logic of listening to the server for new points
+
+
 class Listener:
     # constructor
     def __init__(self, state, port):
         self.app = Flask(__name__)
+        CORS(self.app)
         self.state = state
         self.port = None  # for reporting
         self.activate_time = None
@@ -16,6 +20,10 @@ class Listener:
 
     # defines flask endpoints for robot
     def setup(self):
+
+        @self.app.route('/ping', methods=['GET'])
+        def ping():
+            return jsonify(self.state.to_dict())
 
         @self.app.route('/get_status', methods=['GET'])
         def get_status():

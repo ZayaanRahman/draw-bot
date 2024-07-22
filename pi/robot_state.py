@@ -5,10 +5,13 @@ import json
 import copy
 
 # class storing robot state (to be passed to listeners)
+
+
 class RobotState:
     # constructor
     def __init__(self):
         self.position = (0, 0)
+        self.angle = 0  # 0 is pointing straight up, no mutex needed because not tracked by state
         self.history = []
         self.queue = deque()
 
@@ -144,7 +147,8 @@ class RobotState:
         elif self.get_run_flag() == True:
             output += f"status: running - started at {self.get_start_time()}\n"
         else:
-            output += f"status: not running - stopped at {self.get_end_time()}\n"
+            output += f"status: not running - stopped at {
+                self.get_end_time()}\n"
 
         output += f"position: {self.get_position()}\n"
         output += f"visited: {self.get_history()}\n"
@@ -152,7 +156,7 @@ class RobotState:
 
         output += "================================="
         return output
-    
+
     # convert state to dict for jsonification
     def to_dict(self):
         state = {
@@ -169,7 +173,7 @@ class RobotState:
         while True:  # continue even after run ends
             print(self)
             time.sleep(period)
-            
+
     def log_txt(self, period):
         filename = f"state-log-{time.strftime('%Y-%m-%d-%H-%M')}.txt"
         while True:  # continue even after run ends
