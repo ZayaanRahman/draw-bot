@@ -1,10 +1,16 @@
 # draw-bot
 Working on a robot that follows a hand drawn path from a web interface 🤖
 
-## Outline:
-The robot will be controlled by an Arduino microcontroller and a RaspberryPi. The Pi will listen for commands from the server and instruct the arduino to move the robot towards the points specified in its point queue. The server will be responsible for receiving the path from the web interface, processing it into a series of points, and sending those points to the Pi. The robot can also be controlled via CLI on the server.
+## General Idea:
+The robot will be controlled by an Arduino microcontroller and a RaspberryPi. The Pi adds points to its path from the CLI or the path drawn and sent from the web GUI. As the points are proccessed and added to a queue, they are sent to the Arduino, which guides the robot through points.
 
 ## What's Done:
+- Hardware
 - Pi code
-- Server code
-- Server CLI
+- Arduino code
+- CLI
+- Web GUI
+
+## What's Left:
+- I2C communication
+- Assemble and test
