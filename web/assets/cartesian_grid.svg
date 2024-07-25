@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="400" height="400">	<path d="M-1.0000000000000284 401 L401 401.00000000000006 L401 -1.0000000000000284 L-1 -1.0000000000000284 L-1.0000000000000284 401 Z" stroke-opacity="1" stroke-width="0" stroke-linecap="square" fill="rgb(255, 255, 255)" fill-opacity=" 1"></path>
+	<line x1="40" y1="0" x2="40" y2="400" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="80" y1="0" x2="80" y2="400" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="120" y1="0" x2="120" y2="400" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="160" y1="0" x2="160" y2="400" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="240" y1="0" x2="240" y2="400" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="280" y1="0" x2="280" y2="400" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="320" y1="0" x2="320" y2="400" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="360" y1="0" x2="360" y2="400" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="0" y1="40" x2="400" y2="40" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="0" y1="80" x2="400" y2="80" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="0" y1="120" x2="400" y2="120" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="0" y1="160" x2="400" y2="160" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="0" y1="240" x2="400" y2="240" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="0" y1="280" x2="400" y2="280" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="0" y1="320" x2="400" y2="320" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="0" y1="360" x2="400" y2="360" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="0.25" stroke-linecap="round" stroke-dasharray="none"></line>
+	<line x1="0" y1="200" x2="400" y2="200" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="2" stroke-linecap="round" stroke-dasharray="undefined"></line>
+	<line x1="200" y1="0" x2="200" y2="400" stroke="rgb(0, 0, 0)" stroke-opacity=" 1" stroke-width="2" stroke-linecap="round" stroke-dasharray="undefined"></line>
+</svg>

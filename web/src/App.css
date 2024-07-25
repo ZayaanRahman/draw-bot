@@ -1,19 +1,28 @@
 #root {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 1rem;
 }
 
-form {
+.login-form {
   display: flex;
   flex-direction: column;
   gap: 5px;
   width: 300px
 }
 
+.canvas {
+  display: flex;
+  flex-direction: row;
+}
+
+.canvas-inputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .form-container {
-  width: 400px;
+  width: 300px;
   border-radius: 8px;
   background-color: #212121;
   display: flex;
@@ -22,24 +31,12 @@ form {
   justify-content: center;
   overflow-wrap: break-word; /* Break long words to prevent overflow */
   hyphens: auto; /* Optional: automatically hyphenate long words */
-  padding: 20px;
 }
 
-
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.canvas-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
 }
 
 .card {

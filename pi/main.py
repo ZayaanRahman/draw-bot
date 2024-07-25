@@ -9,6 +9,7 @@ def main():
     robot = Robot()
 
     robot.listen(port=5000)
+    robot.start_print_logger(5)
     # robot.start_file_logger(5)
     # run indefinitely
     # remember, both enable() and run_flag = True are needed for the robot to run
