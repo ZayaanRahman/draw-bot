@@ -34,9 +34,9 @@ void setup()
 }
 
 void receiveEvent() {
-  Serial.print(x);
-  Serial.print(", ");
-  Serial.println(y);
+  // Serial.print(x);
+  // Serial.print(", ");
+  // Serial.println(y);
   
   while (Wire.available()) {
     char xVal = Wire.read();            // Bytes read as chars so they are cast as signed ints
@@ -101,7 +101,6 @@ void receiveEvent() {
   Serial.print(curY);
   Serial.print(",");
   Serial.println(curDir);
-  }
 }
 
 void loop()
