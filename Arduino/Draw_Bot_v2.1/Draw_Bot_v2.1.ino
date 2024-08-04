@@ -53,61 +53,58 @@ void receiveEvent() {
   Wire.beginTransmission(addr);
   Wire.write("WAIT");
   Wire.endTransmission();
+
+  deltaX = x - curX, deltaY = y - curY;
+
+  double mag = sqrt(square(deltaX) + square(deltaY));
+
+  double dir = atan2( (double) deltaY, (double) deltaX);
+
+  long rotSteps = round((dir - curDir) * MM_PER_RAD * STEP_PER_MM);
+
+  long magSteps = round(mag * SCALE_FACTOR * STEP_PER_MM);
+
+  Wire.beginTransmission(addr);
+  Wire.write("WAIT");
+  Wire.endTransmission();
+
+  step1.move(-rotSteps);
+  step2.move(-rotSteps);
+
+  while(abs(step1.distanceToGo()) > 0 || abs(step2.distanceToGo()) > 0) {
+  step1.run();
+  step2.run();
+  }
+
+  Wire.beginTransmission(addr);
+  Wire.write("WAIT");
+  Wire.endTransmission();
+
+  step1.move(magSteps);
+  step2.move(-magSteps);
+
+  while(abs(step1.distanceToGo()) > 0 || abs(step2.distanceToGo()) > 0) {
+  step1.run();
+  step2.run();
+  }
+
+  curX = x;
+  curY = y;
+  curDir = dir;
+
+  Wire.beginTransmission(addr);
+  Wire.write("DONE");
+  Wire.endTransmission();
+
+  Serial.print(curX);
+  Serial.print(",");
+  Serial.print(curY);
+  Serial.print(",");
+  Serial.println(curDir);
+  }
 }
 
 void loop()
 {
-  if (x != curX || y != curY) {
-    Serial.print(x);
-    Serial.print(",");
-    Serial.println(y);
-
-    deltaX = x - curX, deltaY = y - curY;
-
-    double mag = sqrt(square(deltaX) + square(deltaY));
-
-    double dir = atan2( (double) deltaY, (double) deltaX);
-
-    long rotSteps = round((dir - curDir) * MM_PER_RAD * STEP_PER_MM);
-
-    long magSteps = round(mag * SCALE_FACTOR * STEP_PER_MM);
-
-    Wire.beginTransmission(addr);
-    Wire.write("WAIT");
-    Wire.endTransmission();
-
-    step1.move(-rotSteps);
-    step2.move(-rotSteps);
-
-    while(abs(step1.distanceToGo()) > 0 || abs(step2.distanceToGo()) > 0) {
-    step1.run();
-    step2.run();
-    }
-
-    Wire.beginTransmission(addr);
-    Wire.write("WAIT");
-    Wire.endTransmission();
-
-    step1.move(magSteps);
-    step2.move(-magSteps);
-
-    while(abs(step1.distanceToGo()) > 0 || abs(step2.distanceToGo()) > 0) {
-    step1.run();
-    step2.run();
-    }
-
-    curX = x;
-    curY = y;
-    curDir = dir;
-
-    Wire.beginTransmission(addr);
-    Wire.write("DONE");
-    Wire.endTransmission();
-
-    Serial.print(curX);
-    Serial.print(",");
-    Serial.print(curY);
-    Serial.print(",");
-    Serial.println(curDir);
-    }
+  delay(200);
 }
