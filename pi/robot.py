@@ -4,6 +4,7 @@ import copy
 
 from robot_state import RobotState
 from listener import Listener
+from smbus import SMBus
 
 # main class dictating robot operations
 
@@ -131,11 +132,52 @@ class Robot:
     # --LOW LEVEL INTERFACE----------------------------------------------------------------------------
     # -------------------------------------------------------------------------------------------------
 
+    # I2C address: 8
+    addr = 0x8
+
+    # Bus 1 on Pi
+    bus = SMBus(1)
+
     # move to target point
     def move(self, target):
         print(f"moving to {target} \n")
         
-        time.sleep(3)  # just for testing
+        # Unpacking the tuple
+        x, y = target
+
+        # meters to centimeters
+        x = round(x * 100)
+        y = round(y * 100)  
+
+        # Integers to bytes
+        # x and y vals only -50 to 50 so 1 byte is enough for each
+        x_byte = x.to_bytes(1, byteorder = 'big', signed = True)
+        y_byte = y.to_bytes(1, byteorder = 'big', signed = True)
+
+        # Sending x and y values to Arduino
+        self.bus.write_i2c_block_data(self.addr, 0, [x_byte, y_byte])
+
+        # Wait for confirmation from Arduino when robot reaches target
+        status = self.read_status()
         
+        while status != "DONE":
+            if status.isascii():
+                print(f"Received status: {status}")
+
+            status = self.read_status()
+
+            # Poll if at destination every second
+            time.sleep(1)
         
+        print(f"Reached {target}\n")
+
         self.set_position(target)  # not thread safe, edit
+    
+    def read_status(self):
+        # Read up to 32 bytes from the Arduino
+        status = self.bus.read_i2c_block_data(self.addr, 0, 32)
+        
+        # Convert byte data to string, assuming ASCII encoding
+        status_message = ''.join([chr(byte) for byte in status if byte != 0])
+        
+        return status_message
