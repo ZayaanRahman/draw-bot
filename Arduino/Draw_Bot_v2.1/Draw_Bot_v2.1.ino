@@ -2,6 +2,7 @@
 #include <math.h>
 #include <Wire.h>
 
+#define addr 0x8
 #define PI 3.14159265358979323846
 #define STEP_PER_MM 12.185
 #define MM_PER_RAD 64.5
@@ -26,13 +27,18 @@ void setup()
   step2.setAcceleration(acceleration);
 
   Serial.begin(9600);
+  Serial.println("ON");
 
-  Wire.begin(0x8);
+  Wire.begin(addr);
   Wire.onReceive(receiveEvent);
 }
 
-void receiveEvent(int howMany) {
-  if (howMany == 2) {
+void receiveEvent() {
+  Serial.print(x);
+  Serial.print(", ");
+  Serial.println(y);
+  
+  while (Wire.available()) {
     char xVal = Wire.read();            // Bytes read as chars so they are cast as signed ints
     x = (int) xVal;
 
@@ -40,7 +46,11 @@ void receiveEvent(int howMany) {
     y = (int) yVal;
   }
 
-  Wire.beginTransmission();
+  Serial.print(x);
+  Serial.print(", ");
+  Serial.println(y);
+
+  Wire.beginTransmission(addr);
   Wire.write("WAIT");
   Wire.endTransmission();
 }
@@ -62,7 +72,7 @@ void loop()
 
     long magSteps = round(mag * SCALE_FACTOR * STEP_PER_MM);
 
-    Wire.beginTransmission();
+    Wire.beginTransmission(addr);
     Wire.write("WAIT");
     Wire.endTransmission();
 
@@ -74,7 +84,7 @@ void loop()
     step2.run();
     }
 
-    Wire.beginTransmission();
+    Wire.beginTransmission(addr);
     Wire.write("WAIT");
     Wire.endTransmission();
 
@@ -90,7 +100,7 @@ void loop()
     curY = y;
     curDir = dir;
 
-    Wire.beginTransmission();
+    Wire.beginTransmission(addr);
     Wire.write("DONE");
     Wire.endTransmission();
 
