@@ -4,7 +4,7 @@ import copy
 
 from robot_state import RobotState
 from listener import Listener
-from smbus import SMBus
+from smbus2 import SMBus
 
 # main class dictating robot operations
 

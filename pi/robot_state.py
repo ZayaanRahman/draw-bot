@@ -147,8 +147,9 @@ class RobotState:
         elif self.get_run_flag() == True:
             output += f"status: running - started at {self.get_start_time()}\n"
         else:
-            output += f"status: not running - stopped at {
-                self.get_end_time()}\n"
+            # split up this line bc the ide split it in such a way that it wasnt working on pi
+            temp = self.get_end_time() 
+            output += f"status: not running - stopped at {temp}\n"
 
         output += f"position: {self.get_position()}\n"
         output += f"visited: {self.get_history()}\n"
