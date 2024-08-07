@@ -1,4 +1,5 @@
 from smbus2 import SMBus
+import time
 
 
 # I2C address: 8
@@ -20,8 +21,9 @@ while (True):
 
     response = [0]
 
-    while (response[0] == 0):
-        # return 1 byte, either a 0 for wait or a 1 for continue
+    while (response[0] == 0):  # wait for processing to finish
+
+        time.sleep(0.2)  # 200 ms
         response = bus.read_i2c_block_data(addr, 0, 1)
 
-    print("response of 1 received")
+    print(f"response of ${response[0]} received")
