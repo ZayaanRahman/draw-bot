@@ -32,6 +32,8 @@ void setup()
   Wire.begin(0x8);
   Wire.onReceive(receiveEvent);
   Wire.onRequest(requestEvent);
+
+  Serial.println("Setup complete");
 }
 
 void receiveEvent(int n) 
