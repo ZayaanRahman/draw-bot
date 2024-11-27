@@ -131,16 +131,15 @@ class Robot:
 
     # --LOW LEVEL INTERFACE----------------------------------------------------------------------------
     # -------------------------------------------------------------------------------------------------
-
-    ## CHECK IF addr and bus ARE VALID IN PLACEMENT
-    # I2C address: 8
-    addr = 0x8
-
-    # Bus 1 on Pi
-    bus = SMBus(1)
-
+    
     # move to target point
     def move(self, target):
+        # I2C address: 8
+        addr = 0x8
+
+        # Bus 1 on Pi
+        bus = SMBus(1)
+
         print(f"moving to {target} \n")
         
         # Unpacking the tuple
@@ -171,5 +170,4 @@ class Robot:
     def read_status(self):
         # Read up to 32 bytes from the Arduino
         return self.bus.read_i2c_block_data(self.addr, 0, 1)
-    
     

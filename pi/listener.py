@@ -54,6 +54,6 @@ class Listener:
     def listen(self, port):
         self.port = port
         listen_thread = threading.Thread(target=self.app.run, kwargs={
-                                         'port': port}, daemon=True)
+                                         'port': port, 'host': '0.0.0.0'}, daemon=True)
         listen_thread.start()
         self.activate_time = time.strftime('%H:%M:%S')
