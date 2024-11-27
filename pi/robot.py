@@ -132,6 +132,7 @@ class Robot:
     # --LOW LEVEL INTERFACE----------------------------------------------------------------------------
     # -------------------------------------------------------------------------------------------------
 
+    ## CHECK IF addr and bus ARE VALID IN PLACEMENT
     # I2C address: 8
     addr = 0x8
 
@@ -149,21 +150,15 @@ class Robot:
         x = round(x * 100)
         y = round(y * 100)  
 
-        # Integers to bytes
         # x and y vals only -50 to 50 so 1 byte is enough for each
-        x_byte = x.to_bytes(1, byteorder = 'big', signed = True)
-        y_byte = y.to_bytes(1, byteorder = 'big', signed = True)
-
         # Sending x and y values to Arduino
-        self.bus.write_i2c_block_data(self.addr, 0, [x_byte, y_byte])
+        self.bus.write_i2c_block_data(self.addr, 0, [x + 128, y + 128])
 
         # Wait for confirmation from Arduino when robot reaches target
         status = self.read_status()
         
-        while status != "DONE":
-            if status.isascii():
-                print(f"Received status: {status}")
-
+        while status != 1:
+            print(f"Received status: {status}")
             status = self.read_status()
 
             # Poll if at destination every second
