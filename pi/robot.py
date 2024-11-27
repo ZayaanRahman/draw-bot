@@ -152,7 +152,7 @@ class Robot:
         # Wait for confirmation from Arduino when robot reaches target
         status = self.read_status()
         
-        while status == 0:
+        while status[0] == 0:
             print(f"Received status: {status}")
             status = self.read_status()
 
@@ -165,5 +165,4 @@ class Robot:
     
     def read_status(self):
         # Read up to 32 bytes from the Arduino
-        status = self.bus.read_i2c_block_data(self.addr, 0, 1)
-        return int(status)
+        return self.bus.read_i2c_block_data(self.addr, 0, 1)
