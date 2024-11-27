@@ -170,9 +170,6 @@ class Robot:
     
     def read_status(self):
         # Read up to 32 bytes from the Arduino
-        status = self.bus.read_i2c_block_data(self.addr, 0, 32)
-        
-        # Convert byte data to string, assuming ASCII encoding
-        status_message = ''.join([chr(byte) for byte in status if byte != 0])
-        
-        return status_message
+        return self.bus.read_i2c_block_data(self.addr, 0, 1)
+    
+    
