@@ -7,7 +7,7 @@ from cli import Cli
 
 def main():
 
-    cli = Cli(pi_ip="10.0.0.27", pi_port="5000")
+    cli = Cli(pi_ip="10.0.0.28", pi_port="5000")
     cli.run()
 
     # server = Server(pi_ip="", pi_port="5000")
