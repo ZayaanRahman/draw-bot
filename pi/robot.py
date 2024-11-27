@@ -18,6 +18,8 @@ class Robot:
     def __init__(self):
         self.state = RobotState()
         self.listener = Listener(self.state, 3000)
+        self.addr = 0x8         # I2C address: 8
+        self.bus = SMBus(1)     # Bus 1 on Pi
 
     # start a thread to print the robot's state every period seconds
     def start_print_logger(self, period):
@@ -134,12 +136,6 @@ class Robot:
     
     # move to target point
     def move(self, target):
-        # I2C address: 8
-        addr = 0x8
-
-        # Bus 1 on Pi
-        bus = SMBus(1)
-
         print(f"moving to {target} \n")
         
         # Unpacking the tuple
